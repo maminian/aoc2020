@@ -20,9 +20,14 @@ export listloader
         # and automatically close the IO stream.
         x = open(filename) do file
             xstr = readlines(file)
-            x = [parse(dtype,xi) for xi=xstr]
+            if dtype==String
+                x = xstr
+            else
+                x = parse.(dtype,xstr)
+            end
         end
         return x
     end
+
 
 end
