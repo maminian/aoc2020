@@ -23,13 +23,13 @@ end
 # part 1: given loaded map, how many trees would you encounter?
 maneuver = (1,3)    # right 3, down 1. Remember to respect periodicity.
 
-count=0
+bonk_count=0
 x,y=1,1 # careful: matrix coords
 
 while x<=m
     println([x,y])
     if A[x,y]==1
-        global count += 1
+        global bonk_count += 1
         println("bonk")
     end
 
@@ -38,7 +38,7 @@ while x<=m
 end
 
 println("Part 1: \n ======================")
-println( prod(counts) )
+println( bonk_count )
 
 # part 2: repeat for the prescribed slopes.
 # careful, coordinates are reversed from how they describe
@@ -47,20 +47,20 @@ slopes = [(1,1),(1,3),(1,5),(1,7),(2,1)]
 counts = zeros(Int128,size(slopes))
 
 for (k,maneuver) in enumerate(slopes)
-    global count=0
+    global bonk_count=0
     global x,y=1,1 # careful: matrix coords
 
     while x<=m
 #        println([x,y])
         if A[x,y]==1
-            global count += 1
+            global bonk_count += 1
 #            println("bonk")
         end
 
         global x += maneuver[1]
         global y = mod(y-1+maneuver[2],n)+1
     end
-    counts[k] = count
+    counts[k] = bonk_count
 end
 
 println("Part 2: \n ======================")
