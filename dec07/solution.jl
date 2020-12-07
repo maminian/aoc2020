@@ -23,7 +23,7 @@ function build_dictionary(all_entries)
     
     global references = Dict() # assignment of bags to integers
     
-    global counts = zeros(Float64, n,n) # dynamically expanding conversions
+    global counts = zeros(Float64, n,n)
     
     for (i,(p,c)) in enumerate(all_entries)
         # each entry is a (parent_rm, children_rm) tuple
@@ -97,7 +97,7 @@ println("\nPart 2: how many total bags used when carrying a gold shiny? (minus g
 v2 = zeros(Int128, n, 1)
 v2[ref["shiny gold"]] = 1
 
-accum= zeros(Int128, n, 1)  # we never count gold shiny.
+accum = zeros(Int128, n, 1)
 
 C2 = transpose(C)  # reverse flow of directed graph
 
