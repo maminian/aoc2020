@@ -20,7 +20,7 @@ function parse_day08(line::String, pat::Regex=pattern)
     end
 end
 
-mutable struct Intcode
+mutable struct Emu
     program::Array # program as array of tuples
     n::Int  # size of program
     p::Int  # current index position
@@ -37,31 +37,31 @@ end
 
 # following Julia convention - in-place modification
 # ends functions with exclamation point.
-function acc!(state::Intcode,i::Int)
+function acc!(state::Emu,i::Int)
     # acc - global value; accumulator
     state.a += i
     jmp!(state,1)
     return
 end
 
-function jmp!(state::Intcode,i::Int)
+function jmp!(state::Emu,i::Int)
     # jmp - jump value; move to index relative to current position.
     state.p += i
     return
 end
 
-function nop!(state::Intcode,i::Int)
+function nop!(state::Emu,i::Int)
     # nop - no operation - only advance
     jmp!(state,1)
     return
 end
 
-function hist!(state::Intcode,i::Int)
+function hist!(state::Emu,i::Int)
     state.history[i] += 1
     return
 end
 
-function iter!(state::Intcode,verbose::Bool=true)
+function iter!(state::Emu,verbose::Bool=true)
     cmdstr = state.program[state.p][1]
     i = state.program[state.p][2]
     hist!(state,state.p)
@@ -87,10 +87,10 @@ function initialize(input::Array{String,1})
     p = 1
     a = 0
     history = zeros(Int, n)
-    return Intcode(program,n,p,a,history,false)
+    return Emu(program,n,p,a,history,false)
 end
 
-function attempt!(state::Intcode)
+function attempt!(state::Emu)
     iter!(state, false)
     while state.history[state.p] <1
         iter!(state, false)
