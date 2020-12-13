@@ -5,18 +5,12 @@ import loaders
 # https://www.youtube.com/watch?v=6_HO5bRy0Vg
 
 input = loaders.listloader("input", String)
-
 inttype = Int64
 
 arrival = parse(inttype, input[1])
 things = split(input[2],",")
-
-buses = []
-for t in things
-    if t!="x"
-        global buses = vcat(buses, [parse(inttype, t)])
-    end
-end
+mask = (things .!= "x")
+buses = parse.(inttype, things[mask])
 
 next = convert.(inttype, buses .* ceil.(arrival./buses))
 
@@ -35,16 +29,7 @@ println("part 1: ", busid_min*wait_p1)
 # mod(t, bus3) == 2
 # etc..
 
-
-mask = falses(length(things))
 modulo = collect(0:length(things)-1)
-#modulo = zeros(Int, length(things))
-
-for (i,inp) in enumerate(things)
-    if inp!="x"
-        mask[i] = true
-    end
-end
 modulo = modulo[mask]   # remove placeholders
 
 function moop(step1,step2, shift1, shift2)
